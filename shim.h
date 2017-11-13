@@ -55,19 +55,25 @@ static inline CURLcode curlHelperSetOptReadFunc(CURL *curl, void *userData, size
 }
 
 static inline CURLcode curlHelperSetOptWriteFunc(CURL *curl, void *userData, size_t (*write_cb) (char *ptr, size_t size, size_t nmemb, void *userdata)) {
-
-    CURLcode rc = curl_easy_setopt(curl, CURLOPT_WRITEDATA, userData);
-    if  (rc == CURLE_OK) {
-        rc = curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, write_cb);
+    
+    CURLcode rc = curl_easy_setopt(curl, CURLOPT_HEADER, 1);
+    if  (rc == CURLE_OK)  {
+        rc = curl_easy_setopt(curl, CURLOPT_WRITEDATA, userData);
+        if  (rc == CURLE_OK) {
+            rc = curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, write_cb);
+        }
     }
     return rc;
 }
 
 static inline CURLcode curlHelperSetOptHeaderFunc(CURL *curl, void *userData, size_t (*header_cb) (char *buffer, size_t size, size_t nmemb, void *userdata)) {
-
-    CURLcode rc = curl_easy_setopt(curl, CURLOPT_HEADERDATA, userData);
+    
+    CURLcode rc = curl_easy_setopt(curl, CURLOPT_HEADER, 0);
     if (rc == CURLE_OK) {
-        rc = curl_easy_setopt(curl, CURLOPT_HEADERFUNCTION, header_cb);
+        rc = curl_easy_setopt(curl, CURLOPT_HEADERDATA, userData);
+        if (rc == CURLE_OK) {
+            rc = curl_easy_setopt(curl, CURLOPT_HEADERFUNCTION, header_cb);
+        }
     }
     return rc;
 }
