@@ -81,7 +81,7 @@ static inline CURLcode curlHelperGetInfoLong(CURL *curl, CURLINFO info, long *da
     return curl_easy_getinfo(curl, info, data);
 }
 
-static inline CURLcode curlHelperGetInfoLong(CURLM *curlMulti, CURLMoption option, long data) {
+static inline CURLcode curlHelperSetMultiOpt(CURLM *curlMulti, CURLMoption option, long data) {
     return curl_multi_setopt(curlMulti, option, data);
 }
 
