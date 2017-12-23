@@ -18,6 +18,8 @@
 #define CurlHelpers_h
 
 #import <curl/curl.h>
+#import <curl/multi.h>
+
 
 #define CURL_TRUE  1
 #define CURL_FALSE 0
