@@ -87,5 +87,12 @@ static inline CURLMcode curlHelperSetMultiOpt(CURLM *curlMulti, CURLMoption opti
     return curl_multi_setopt(curlMulti, option, data);
 }
 
+static inline CURLcode curlHelperSetUnixSocketPath(CURL *curl, const char *data) {
+#ifdef CURL_VERSION_UNIX_SOCKETS
+    return curl_easy_setopt(curl, CURLOPT_UNIX_SOCKET_PATH, data);
+#else
+    return CURLE_NOT_BUILT_IN;
+#endif
+}
 
 #endif /* CurlHelpers_h */
