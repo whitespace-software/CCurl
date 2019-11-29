@@ -87,6 +87,22 @@ static inline CURLMcode curlHelperSetMultiOpt(CURLM *curlMulti, CURLMoption opti
     return curl_multi_setopt(curlMulti, option, data);
 }
 
+static inline CURLMcode curlHelperSetMultiOptTimerFunc(CURLM *curlMulti, void *userData, size_t (*timer_cb) (CURLM *curlMulti, long timeout_ms, void *userdata)) {
+    CURLMcode rc = curl_multi_setopt(curlMulti, CURLMOPT_TIMERDATA, userData);
+    if (rc == CURLE_OK) {
+        rc = curl_multi_setopt(curlMulti, CURLMOPT_TIMERFUNCTION, timer_cb);
+    }
+    return rc;
+}
+
+static inline CURLMcode curlHelperSetMultiOptSocketFunc(CURLM *curlMulti, void *userData, size_t (*socket_cb) (CURL *curl, curl_socket_t socket, int what, void *userdata, void *socketptr)) {
+    CURLMcode rc = curl_multi_setopt(curlMulti, CURLMOPT_SOCKETDATA, userData);
+    if (rc == CURLE_OK) {
+        rc = curl_multi_setopt(curlMulti, CURLMOPT_SOCKETFUNCTION, socket_cb);
+    }
+    return rc;
+}
+
 static inline CURLcode curlHelperSetUnixSocketPath(CURL *curl, const char *data) {
 #ifdef CURL_VERSION_UNIX_SOCKETS
     return curl_easy_setopt(curl, CURLOPT_UNIX_SOCKET_PATH, data);
